@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
 
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
@@ -44,6 +45,7 @@ module.exports = env => {
       ]
     },
     plugins: [
+      new ErrorOverlayPlugin(),
       CSSExtract,
       new webpack.DefinePlugin({
         "process.env.FIREBASE_API_KEY": JSON.stringify(
@@ -71,7 +73,11 @@ module.exports = env => {
       contentBase: path.join(__dirname, "public"),
       historyApiFallback: true,
       publicPath: "/dist/",
-      port: 9000
+      port: 9000,
+      overlay: {
+        warnings: true,
+        errors: true
+      }
     }
   };
 };
